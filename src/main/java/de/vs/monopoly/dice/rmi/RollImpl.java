@@ -1,13 +1,15 @@
-package de.vs.monopoly.dice;
+package de.vs.monopoly.dice.rmi;
 
 import java.rmi.server.UnicastRemoteObject;
+
+import de.vs.monopoly.dice.Roll;
+import de.vs.monopoly.dice.rmi.DiceRMI;
+
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
-
-import de.vs.monopoly.dice.DiceRMI;
 
 
 public class RollImpl extends UnicastRemoteObject 

@@ -1,6 +1,8 @@
-package de.vs.monopoly;
+package de.vs.monopoly.dice.rest;
 
 import java.util.Random;
+
+import de.vs.monopoly.dice.Roll;
 
 public class Dice {
 	
@@ -16,7 +18,7 @@ public class Dice {
 	}
 	
 	public int getZahl(){
-		return roll.getZahl();
+		return roll.getNumber();
 	}
 	
 	

@@ -1,4 +1,4 @@
-package de.vs.monopoly;
+package de.vs.monopoly.dice.rest;
 
 import static spark.Spark.*;
 import com.google.gson.*;
