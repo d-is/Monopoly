@@ -1,6 +1,7 @@
 package de.vs.monopoly.dice.rmi;
 
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Random;
 
 import de.vs.monopoly.dice.Roll;
 import de.vs.monopoly.dice.rmi.DiceRMI;
@@ -28,7 +29,7 @@ public RollImpl() throws RemoteException {
 			System.out.println(ex.getMessage());
 		}
 		try{
-			Naming.rebind("Roll2", new RollImpl());
+			Naming.rebind("Roll", new RollImpl());
 		} catch(MalformedURLException ex){
 			System.out.println(ex.getMessage());
 		} catch(RemoteException ex){
@@ -38,7 +39,8 @@ public RollImpl() throws RemoteException {
 	
   public Roll roll() throws RemoteException {
 		// TODO Auto-generated method stub
-		return new Roll(5);
+	  Random rand = new Random();
+		return new Roll(rand.nextInt(6)+1);
 	}
 
 }
