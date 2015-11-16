@@ -1,7 +1,9 @@
-package de.vs.monopoly.dice.rest;
+package de.vs.monopoly.rest;
 
 import static spark.Spark.*;
 import com.google.gson.*;
+
+import de.vs.monopoly.model.Dice;
 
 public class DiceService 
 {

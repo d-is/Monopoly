@@ -1,8 +1,6 @@
-package de.vs.monopoly.dice.rest;
+package de.vs.monopoly.model;
 
 import java.util.Random;
-
-import de.vs.monopoly.dice.Roll;
 
 public class Dice {
 	

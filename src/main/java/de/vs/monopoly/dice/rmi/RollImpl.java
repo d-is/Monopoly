@@ -3,8 +3,8 @@ package de.vs.monopoly.dice.rmi;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Random;
 
-import de.vs.monopoly.dice.Roll;
 import de.vs.monopoly.dice.rmi.DiceRMI;
+import de.vs.monopoly.model.Roll;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;

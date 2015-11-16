@@ -1,4 +1,4 @@
-package de.vs.monopoly.dice;
+package de.vs.monopoly.model;
 
 import java.io.Serializable;
 
