@@ -1,20 +1,28 @@
 package de.vs.monopoly.rest;
 
 import static spark.Spark.*;
+
+import java.io.IOException;
+
 import com.google.gson.*;
 
 import de.vs.monopoly.model.*;
+import retrofit.ClientInterface;
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
 import spark.Route;
+
+
 
 public class BoardsService {
 	public static void main(String[] args) {
-		Game game = new Game("Test", new Components("game", "dice", "board", "bank", "broker", "decks", "events"));
 
-		Dice dice = new Dice();
+		Components compo = new Components("", "http://localhost", "http://localhost", "", "", "", "");
 		Board board = new Board();
-		Player player;
-
 		Gson gson = new Gson();
+		
+	
+		
 
 		// Zustand des Brettes abfragen
 		get("/boards/:gameid", (request, response) -> {
@@ -26,16 +34,31 @@ public class BoardsService {
 		// Position des Spielers abfragen
 		get("/boards/:gameid/players/:playerid", (request, response) -> {
 			String json = null;
-			for (Player elem : game.getPlayers()) {
-				if (elem.getId().equals(request.params(":playerid"))) {
-					json = gson.toJson(elem.getPosition());
-					break;
-				}
-			}
+	
+			json = gson.toJson(board.getPositions().get(request.params(":playerid")));
+
 			response.status(200);
 			return json;
-
 		});
+	
+		post("/boards/:gameid/players/:playerid/roll", (request, response) -> {
+			
+		String json ;
+			try {
+				json = gson.toJson("");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	
+			//String json = gson.toJson(client.dice().execute().body());
+			//response.status(200);
+			//return json;
+		});
+		
+		
+		
+		// in Arbeit
 		// Position des Spielers ändern
 		put("/boards/:gameid/players/:playerid/:position", (request, response) -> {
 			String json = null;
@@ -45,43 +68,9 @@ public class BoardsService {
 					break;
 				}
 			}
-			
 
-		});
-
-		//
-		post("/boards/:gameid/players:playerid/roll", (request, response) -> {
-			dice.wuerfeln();
-			String json = gson.toJson(dice.getRoll());
-			response.status(200);
-			return json;
 		});
 
 	}
 
-
 }
-
-// get("/dice", (request, response) -> {
-// dice.wuerfeln();
-// String json = gson.toJson(dice.getRoll());
-// response.status(200);
-// return json;
-// });
-// get("/dice", (request, response) -> {
-// dice.wuerfeln();
-// String json = gson.toJson(dice.getRoll());
-// response.status(200);
-// return json;
-// });
-// ///{gameid}/players/{playerid}/roll
-//
-//
-//
-//
-// get("/games/:gameid/players", (request, response) ->{
-// for(Game game : gameListe){
-// if(game.equals(request.params(":gameid"))){
-// response.status(200);
-// return game.getPlayers();
-// }}response.status(400);return"Gameid wrong.";});

@@ -7,17 +7,17 @@ import java.util.HashMap;
 public class Board {
 
 	private ArrayList<Field>fields;
-	private HashMap<Integer, Integer> positions;
+	private HashMap<String, Integer> positions;
 	public Board() {
 		super();
 		fields = new ArrayList<Field>();
-		this.positions = new HashMap<Integer,Integer>();
+		this.positions = new HashMap<String,Integer>();
 	}
 	
 	public ArrayList<Field> getFields() {
 		return fields;
 	}
-	public HashMap<Integer, Integer> getPositions() {
+	public HashMap<String, Integer> getPositions() {
 		return positions;
 	}
 	
