@@ -41,6 +41,7 @@ public RollImpl() throws RemoteException {
 		// TODO Auto-generated method stub
 	  Random rand = new Random();
 		return new Roll(rand.nextInt(6)+1);
+		
 	}
 
 }

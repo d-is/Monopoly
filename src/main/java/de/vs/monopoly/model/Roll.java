@@ -11,5 +11,8 @@ public class Roll implements Serializable{
 	public int getNumber(){
 		return this.number;
 	}
+	public String toString(){
+		return ""+number;
+	}
 
 }
