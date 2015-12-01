@@ -7,7 +7,6 @@ import java.io.IOException;
 import com.google.gson.*;
 
 import de.vs.monopoly.model.*;
-import retrofit.ClientInterface;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 import spark.Route;
@@ -55,7 +54,7 @@ public class BoardsService {
 			//response.status(200);
 			//return json;
 		});
-		
+
 		
 		
 		// in Arbeit
@@ -72,5 +71,6 @@ public class BoardsService {
 		});
 
 	}
+
 
 }
