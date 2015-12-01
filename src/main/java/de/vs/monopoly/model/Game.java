@@ -31,7 +31,7 @@ public class Game {
 		this.components = components;
 	}
 	
-	public Game(String gameid, Components components){
+	public Game(){
 		this.gameid = gameid;
 		this.players = new ArrayList<Player>();
 		this.components = components;
