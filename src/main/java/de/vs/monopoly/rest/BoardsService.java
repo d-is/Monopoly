@@ -1,14 +1,19 @@
 package de.vs.monopoly.rest;
 
-import static spark.Spark.*;
-import com.google.gson.*;
+import static spark.Spark.get;
+import static spark.Spark.post;
+import static spark.Spark.put;
 
-import de.vs.monopoly.model.*;
-import spark.Route;
+import com.google.gson.Gson;
+
+import de.vs.monopoly.model.Board;
+import de.vs.monopoly.model.Dice;
+import de.vs.monopoly.model.Game;
+import de.vs.monopoly.model.Player;
 
 public class BoardsService {
 	public static void main(String[] args) {
-		Game game = new Game("Test", new Components("game", "dice", "board", "bank", "broker", "decks", "events"));
+		Game game = new Game();
 
 		Dice dice = new Dice();
 		Board board = new Board();
@@ -45,8 +50,8 @@ public class BoardsService {
 					break;
 				}
 			}
-			
 
+			return null;
 		});
 
 		//
@@ -58,7 +63,6 @@ public class BoardsService {
 		});
 
 	}
-
 
 }
 

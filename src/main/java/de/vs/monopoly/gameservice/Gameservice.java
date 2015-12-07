@@ -1,30 +1,33 @@
 package de.vs.monopoly.gameservice;
 
+import static spark.Spark.get;
+import static spark.Spark.post;
+import static spark.Spark.put;
+
 import java.util.ArrayList;
-import java.util.Collection;
-import static spark.Spark.*;
+import java.util.List;
+
 import com.google.gson.Gson;
+
+import de.vs.monopoly.model.Game;
+import de.vs.monopoly.model.Place;
+import de.vs.monopoly.model.Player;
 
 public class Gameservice {
 
 	public static void main(String[] args) {
 
-		Collection<Game> gameListe = new ArrayList<Game>();
+		List <Game> gameListe = new ArrayList<Game>();
 		Gson gson = new Gson();
-//		
-//		Player test = new Player("test","Tester","", null, 0);
-//		ArrayList<Player> plays = new ArrayList<Player>();
-//		plays.add(test);
-//		Game temp = new Game("SpikesGame", plays);
-//		gameListe.add(temp);
 
 // erstellt neues spiel		
 		post("/games", (request,response) ->{
-//			Game game = gson.fromJson(request.body(), Game.class);
-//			gameListe.add(game);
-//			response.status(201);
-//			return gson.toJson(game);
-			return "spiel";
+			Game game = new Game();
+			gameListe.add(game);
+			String rueck = gson.toJson(game);
+			response.status(201);
+			return rueck;
+			
 		});
 
 // spieler registrieren sich		
@@ -37,11 +40,11 @@ public class Gameservice {
 				if(game.getGameid()==gameid){
 					game.AddPlayer(player);
 					response.status(200);
-					return gson.toJson(player);
+					return null;
 				}
 			}
 			response.status(400);
-			return "Das Spiel konnte nicht gefunden werden.";
+			return null;
 		});
 
 // spieler melden sich ready
@@ -56,13 +59,13 @@ public class Gameservice {
 						if(player.getId()==playerid){
 							response.status(200);
 							player.setReady(true);
-							return "Ready!";
+							return null;
 						}
 					}
 				}
 			}
 			response.status(400);
-			return "Spieler oder Spiel nicht bekannt";
+			return null;
 		});
 		
 		
