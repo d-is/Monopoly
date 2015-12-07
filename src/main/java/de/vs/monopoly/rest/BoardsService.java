@@ -1,15 +1,28 @@
 package de.vs.monopoly.rest;
 
-import static spark.Spark.get;
-import static spark.Spark.post;
-import static spark.Spark.put;
+import static spark.Spark.*;
 
-import com.google.gson.Gson;
+import java.io.IOException;
 
-import de.vs.monopoly.model.Board;
-import de.vs.monopoly.model.Dice;
+import com.google.gson.*;
+
+import de.vs.monopoly.model.*;
+import retrofit.ClientInterface;
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
+import spark.Route;
 import de.vs.monopoly.model.Game;
 import de.vs.monopoly.model.Player;
+import de.vs.monopoly.model.*;
+import retrofit.ClientInterface;
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
+import spark.Route;
+import de.vs.monopoly.model.*;
+import retrofit.ClientInterface;
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
+import spark.Route;
 
 public class BoardsService {
 	public static void main(String[] args) {
