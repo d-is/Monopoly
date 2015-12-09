@@ -9,20 +9,20 @@ import de.vs.monopoly.model.Service;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
-public class VerzeichnisdienstImpl {
+public class VerzeichnisdienstImplNeu {
 
-	private static VerzeichnisdienstImpl verzeichnisdienstImpl;
+	private static VerzeichnisdienstImplNeu verzeichnisdienstImpl;
 	final String url = "https://vs-docker.informatik.haw-hamburg.de/ports/8053/services";
 	Retrofit retro;
 	VerzeichnisdienstInterface verzeichnisdienst;
 
-	public static VerzeichnisdienstImpl init() {
+	public static VerzeichnisdienstImplNeu init() {
 		if(verzeichnisdienstImpl == null)
-			verzeichnisdienstImpl= new VerzeichnisdienstImpl();
+			verzeichnisdienstImpl= new VerzeichnisdienstImplNeu();
 		return verzeichnisdienstImpl;
 
 	}
-	private VerzeichnisdienstImpl() {
+	private VerzeichnisdienstImplNeu() {
 		retro = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
 		verzeichnisdienst = retro.create(VerzeichnisdienstInterface.class);
 	}
