@@ -1,63 +1,97 @@
 package controller;
 
-import com.mashape.unirest.http.exceptions.UnirestException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 
-import interfaces.Rest;
+import de.vs.monopoly.model.Roll;
+import de.vs.monopoly.model.Player;
+import de.vs.monopoly.model.Game;
+import retrofit.ClientInterface;
+
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
 
 public class Controller {
-	private Rest rest;
+	private static ClientInterface client;
+	private static GameData gd;
 
-    public void setHost(String host) {
-        rest = Rest.newInstance(host);
-    }
+	public static void init() {
+		
+		//Verzeichnisdienst implementieren
+		
+		
+		Retrofit retro = new Retrofit.Builder().baseUrl("http://localhost:4567")
+				.addConverterFactory(GsonConverterFactory.create()).build();
+		client = retro.create(ClientInterface.class);
 
-    public String createGame(String gameId, String playerId, String playerName) {
-        try {
-            return rest.post("games").body("{\"gameid\":\"" + gameId + "\",\"players\":[{\"id\":\"" + playerId + "\",\"name\":\" " + playerName + "\",\"uri\":\"\",\"position\":0,\"ready\":false}]}").asJson().getBody().toString();
-        } catch (UnirestException e) {
-            e.printStackTrace();
-        }
-        return "Fehler";
-    }
+		gd = GameData.initGameObject();
+	}
 
-    public String registerPlayer(String gameId, String playerId) {
-        try {
-            return rest.put("games", gameId, "players", playerId).asJson().getBody().toString();
-        } catch (UnirestException e) {
-            e.printStackTrace();
-        }
-        return "Fehler";
-    }
+	public static void dice() {
+		client.dice();
+	}
 
-    public String playerReady(String gameId, String playerId) {
+	public static boolean createGame(String gamename, String playername) {
+		Random rand = new Random();
+		String id = rand.nextInt() + "";
+		Game game = null;
+		Player player = new Player(id, playername, null, null, 0);
+		try {
+			game = client.erstelleSpiel().execute().body();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 
-        try {
-            return rest.put("games", gameId, "players", playerId, "ready").asJson().getBody().toString();
-        } catch (UnirestException e) {
-            e.printStackTrace();
-        }
+		gd.setGameDate(game, player);
 
-        return "Fehler";
-    }
+		registerPlayer(player);
 
-    public String allPlayerReady(String gameId, String playerId) {
-        try {
-            return rest.get("games", gameId, "players", playerId, "ready").asJson().getBody().toString();
-        } catch (UnirestException e) {
-            e.printStackTrace();
-        }
+		return true;
+	}
 
-        return "Fehler";
-    }
+	public static boolean registerPlayer(String gameid, String playerid) {
+		try {
 
-    public String dice() {
-        try {
+			Game game = new Game(gameid, new ArrayList<Player>(), null);
 
-            return rest.get("dice").asJson().getBody().toString();
-        } catch (UnirestException e) {
-            e.printStackTrace();
-        }
+			Player player = new Player(playerid, "", null, null, 0);
 
-        return "Fehler";
-    }
+			client.registriereSpieler(game.getGameid().toString(), player.getId().toString());
+
+			gd.setGameDate(game, player);
+			gd.getGame().getPlayers().add(player);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+
+	}
+
+	private static void registerPlayer(Player player) {
+		try {
+
+			client.registriereSpieler(gd.getGame().getGameid().toString(), player.getId().toString());
+
+			gd.getGame().getPlayers().add(player);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public static void setPlayerReady() {
+		client.meldeSpielerReady(gd.getGame().getGameid().toString(), gd.getPlayer().getId().toString());
+	}
+
+	public static void putDiceThToBoardService(int rollNumber) {
+		Roll roll = new Roll(rollNumber);
+		client.uebergebeWurf(gd.getGame().getGameid().toString(), gd.getPlayer().getId().toString(), roll);
+	}
+
 }

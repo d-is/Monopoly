@@ -12,7 +12,7 @@ import de.vs.monopoly.model.Roll;
 
 public class BoardsService {
 	public static void main(String[] args) {
-		Game game = new Game();
+		Game game = new Game(null, null, null);
 
 		Board board = new Board();
 

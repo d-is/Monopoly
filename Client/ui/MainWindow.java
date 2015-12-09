@@ -34,7 +34,7 @@ import javax.swing.plaf.basic.BasicTreeUI.TreeExpansionHandler;
 import controller.Feld;
 import controller.GameData;
 import controller.Spielfeld;
-import entities.Place;
+import de.vs.monopoly.model.Place;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -209,7 +209,7 @@ public class MainWindow {
 		lblDiceMenu.setBounds(10, 11, 125, 22);
 		panel.add(lblDiceMenu);
 
-		// Würfel werden erstellt
+		// Wï¿½rfel werden erstellt
 		lblDice1.setBounds(10, 44, 80, 80);
 		panel.add(lblDice1);
 
@@ -424,13 +424,13 @@ public class MainWindow {
 	}
 
 	private void setCoordinates(Place place) {
-		// Soll Spielfigueren, Häuser, Hotels auf den Spielfeld ablegen und
+		// Soll Spielfigueren, Hï¿½user, Hotels auf den Spielfeld ablegen und
 		// verschieben
 
 		Spielfeld board = new Spielfeld(700,700);
 											//Title X/Y  X/Y   X/Y    X/Y
 		board.getSpielfelder().add(new Feld("Start",0,0,0,107,107,0,107,107));
-		board.getSpielfelder().add(new Feld("Brunnenstraße",108,0,108,107,107,0,107,107));
+		board.getSpielfelder().add(new Feld("Brunnenstraï¿½e",108,0,108,107,107,0,107,107));
 		board.getSpielfelder().add(new Feld("Start",0,0,0,107,107,0,107,107));
 		board.getSpielfelder().add(new Feld("Start",0,0,0,107,107,0,107,107));
 		
