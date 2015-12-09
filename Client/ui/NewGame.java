@@ -8,12 +8,18 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import controller.Controller;
 import controller.GameData;
+import de.vs.monopoly.model.Game;
+import de.vs.monopoly.model.Roll;
+
 
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.ResourceBundle.Control;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 
@@ -72,7 +78,7 @@ public class NewGame extends JDialog {
 		textFieldUsername.setBounds(105, 73, 320, 20);
 		contentPanel.add(textFieldUsername);
 		textFieldUsername.setColumns(10);
-		
+
 		JRadioButton rdbtnCreateGame = new JRadioButton("Spiel erstellen");
 		rdbtnCreateGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -90,10 +96,26 @@ public class NewGame extends JDialog {
 				JButton okButton = new JButton("los gehts!");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						GameData.initGameObject().getPlayer().setName(textFieldUsername.getText());
-						GameData.initGameObject().getGame().setGameid(textFieldServerData.getText());
+						// An dieser Stelle muss die Verbindung per
+						// Verzeichnisdienst geschehen und dann erst die
+						// speicherung in den GameData
+
+						if (rdbtnCreateGame.isSelected()) { // Wenn man ein
+															// eigenes Spiel
+															// erstellen möchte
+							boolean suc = Controller.createGame(textFieldServerData.getText(),
+									textFieldUsername.getText());
+
+						} else { // Wenn man sich an einem bestehenden Spiel
+									// anmelden möchte
+
+							boolean suc = Controller.registerPlayer(textFieldServerData.getText(),
+									textFieldUsername.getText());
+
+						}
+
 						MainWindow.update();
-						 dispose();
+						dispose();
 					}
 				});
 				okButton.setActionCommand("OK");

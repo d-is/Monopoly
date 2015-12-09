@@ -3,6 +3,7 @@ package de.vs.monopoly.model;
 import java.util.ArrayList;
 
 public class Game {
+	
 	private String gameid;
 	private ArrayList<Player> players;
 	private Components components;
@@ -31,9 +32,9 @@ public class Game {
 		this.components = components;
 	}
 	
-	public Game(){
+	public Game(String gameid, ArrayList<Player> players, Components components){
 		this.gameid = gameid;
-		this.players = new ArrayList<Player>();
+		this.players = players;
 		this.components = components;
 	}
 	
