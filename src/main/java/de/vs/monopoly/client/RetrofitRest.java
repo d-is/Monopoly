@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
-import retrofit.Retrofit.Builder;
 
 public class RetrofitRest {
 
