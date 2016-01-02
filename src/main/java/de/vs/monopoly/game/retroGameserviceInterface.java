@@ -1,4 +1,4 @@
-package de.vs.monopoly.gameservice;
+package de.vs.monopoly.game;
 
 import retrofit.Call;
 import retrofit.http.Body;

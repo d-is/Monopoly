@@ -33,7 +33,7 @@ Call<Void> loescheServiceById(@Path("id") String id);
 
 
 @GET("services/of/name/{name}")
-Call<ArrayList<Object>> holeServiceByName(@Path("name") String name);
+Call<Object> holeServiceByName(@Path("name") String name);
 
 @GET("services/of/type/{type}")
 Call<ArrayList<Object>> holeServiceByType(@Path("type") String type);
