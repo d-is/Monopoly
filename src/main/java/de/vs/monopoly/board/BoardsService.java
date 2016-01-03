@@ -1,4 +1,4 @@
-package de.vs.monopoly.rest;
+package de.vs.monopoly.board;
 
 import static spark.Spark.get;
 import static spark.Spark.post;

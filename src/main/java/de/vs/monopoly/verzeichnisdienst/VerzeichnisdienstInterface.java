@@ -1,7 +1,6 @@
 package de.vs.monopoly.verzeichnisdienst;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit.Call;
 import retrofit.http.Body;

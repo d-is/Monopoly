@@ -1,4 +1,4 @@
-package de.vs.monopoly.gameservice;
+package de.vs.monopoly.game;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
