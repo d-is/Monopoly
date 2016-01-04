@@ -21,9 +21,6 @@ public class Gameservice {
 //	Gson gson = new Gson();
 	
 	
-	
-	
-	
 	public static void main(String[] args) {
 		
 //		int gameid = 0;

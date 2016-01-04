@@ -8,10 +8,11 @@ import controller.GameData;
 import de.vs.monopoly.model.Game;
 import de.vs.monopoly.model.Player;
 import de.vs.monopoly.model.Service;
+import retrofit.Call;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
-public class VerzeichnisdienstImpl {
+public class VerzeichnisdienstImpl  {
 
 	private static VerzeichnisdienstImpl verzeichnisdienstImpl;
 	final String url = "https://vs-docker.informatik.haw-hamburg.de/ports/8053/services";
@@ -33,7 +34,6 @@ public class VerzeichnisdienstImpl {
 	public VerzeichnisdienstInterface getVerzeichnisdienstInterface(){
 		return this.verzeichnisdienst;
 	}
-	
 	public Service holeServiceById(String name){
 		Service result = null;
 		try {
@@ -44,7 +44,7 @@ public class VerzeichnisdienstImpl {
 		}
 		
 		return result;
-	}
+	}	
 
 	public ArrayList<Service> getServiceByName(String name) {
 		ArrayList<Service> result = new ArrayList<Service>();
@@ -56,7 +56,6 @@ public class VerzeichnisdienstImpl {
 		}
 		
 		return result;
-	}  
+	}   
 
 }
-
