@@ -11,9 +11,7 @@ import retrofit.http.Path;
 
 
 public interface ClientInterface {
-	@GET("/dice")
-	Call<Roll> dice();
-	
+
 	@POST("/games")
 	Call<Game> erstelleSpiel();
 	
