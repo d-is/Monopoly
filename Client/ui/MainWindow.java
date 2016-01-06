@@ -2,6 +2,7 @@ package ui;
 
 import java.applet.Applet;
 import java.applet.AudioClip;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -31,10 +32,12 @@ import java.awt.Frame;
 import javax.swing.border.CompoundBorder;
 import javax.swing.plaf.basic.BasicTreeUI.TreeExpansionHandler;
 
+import controller.Controller;
 import controller.Feld;
 import controller.GameData;
 import controller.Spielfeld;
 import de.vs.monopoly.model.Place;
+import de.vs.monopoly.model.Roll;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -53,6 +56,7 @@ public class MainWindow {
 
 	private JLabel lblDice1 = new JLabel("");
 	private JLabel lblDice2 = new JLabel("");
+	public static JLabel lblDiceResult = new JLabel("Ergebnis:");
 	private static JLabel spielername = new JLabel("");
 	private static JLabel spiel = new JLabel("");
 	private JPanel panel;
@@ -63,7 +67,7 @@ public class MainWindow {
 			public void run() {
 				try {
 					GameData.initGameObject();
-
+					Controller.init();
 					window = new MainWindow();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
@@ -95,11 +99,19 @@ public class MainWindow {
 		frame.getContentPane().add(panel_mainUser);
 		panel_mainUser.setLayout(null);
 
+
+		
 		JLabel lblUsermenu = new JLabel("Spielmen\u00FC");
 		lblUsermenu.setBounds(5, 5, 95, 22);
 		lblUsermenu.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblUsermenu.setVerticalAlignment(SwingConstants.TOP);
+		
+
+		
+		
 		panel_mainUser.add(lblUsermenu);
+		
+		
 
 		JLabel lblMenuMoney = new JLabel("Geld:");
 		lblMenuMoney.setBounds(15, 38, 46, 14);
@@ -199,7 +211,7 @@ public class MainWindow {
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 
-		JLabel lblDiceResult = new JLabel("Ergebnis:");
+		
 		lblDiceResult.setBounds(10, 132, 213, 14);
 		panel.add(lblDiceResult);
 
@@ -221,7 +233,7 @@ public class MainWindow {
 			public void actionPerformed(ActionEvent arg0) {
 				lblDice2.setVisible(false);
 				lblDice1.setVisible(false);
-
+	
 				AudioClip click;
 				URL urlClick = MainWindow.class.getResource("wuerfelbecher.wav");
 				click = Applet.newAudioClip(urlClick);
@@ -234,8 +246,15 @@ public class MainWindow {
 				}
 				lblDice2.setVisible(true);
 				lblDice1.setVisible(true);
-				int[] result = getDiceResult();
-				lblDiceResult.setText("Ergebnis: Gehen Sie " + (result[0] + result[1]) + " Felder vor!");
+				int[] result;
+				try {
+					result = getDiceResult();
+					lblDiceResult.setText("Ergebnis: Gehen Sie " + (result[0] + result[1]) + " Felder vor!");
+				} catch (IOException e) {
+					lblDiceResult.setText("Fehler bei der Kommunikation mit dem DICE Service");
+					e.printStackTrace();
+				}
+				
 			}
 		});
 		btnRoll.setBounds(134, 14, 89, 23);
@@ -266,8 +285,10 @@ public class MainWindow {
 		panel_1.setBounds(10, 494, 233, 194);
 		frame.getContentPane().add(panel_1);
 
-		JLabel lblSpielmenuAktion = new JLabel("");
+		JLabel lblSpielmenuAktion = new JLabel("<html>Erstellen oder registieren Sie <br>sich für ein Spiel!</html>", SwingConstants.CENTER);
+	
 		lblSpielmenuAktion.setBounds(10, 112, 213, 71);
+		lblSpielmenuAktion.setForeground(Color.RED);
 		panel_1.add(lblSpielmenuAktion);
 
 		JLabel lblSpielmen = new JLabel("Spielmen\u00FC");
@@ -291,6 +312,38 @@ public class MainWindow {
 		JButton btnTauschen = new JButton("tauschen");
 		btnTauschen.setBounds(122, 44, 101, 23);
 		panel_1.add(btnTauschen);
+		
+		btnKaufen.setEnabled(false);
+		btnRoll.setEnabled(false);
+		btnTauschen.setEnabled(false);
+		btnHausBauen.setEnabled(false);
+		btnHotelBauen.setEnabled(false);
+		
+		JButton btnReady = new JButton("Bin Bereit!");
+		btnReady.setBounds(5, 150, 101, 23);
+		btnReady.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				if(GameData.initGameObject().getGame() != null && GameData.initGameObject().getPlayer() != null){
+					try {
+						Controller.setPlayerReady();
+						
+						btnKaufen.setEnabled(true);
+						btnRoll.setEnabled(true);
+						btnTauschen.setEnabled(false);
+						btnHausBauen.setEnabled(false);
+						btnHotelBauen.setEnabled(false);
+						
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+				
+			}
+		});
+		panel_mainUser.add(btnReady);
 
 	}
 
@@ -302,11 +355,11 @@ public class MainWindow {
 
 	}
 
-	private int[] getDiceResult() {
-		Random rand = new Random();
+	private int[] getDiceResult() throws IOException {
 
-		int dice1 = 1;
-		int dice2 = 1;
+
+		int dice1 = 0;
+		int dice2 = 0;
 
 		URL imageUrl1;
 		ImageIcon icon1 = null;
@@ -355,8 +408,8 @@ public class MainWindow {
 			e.printStackTrace();
 		}
 
-		dice1 = rand.nextInt(6) + 1;
-		dice2 = rand.nextInt(6) + 1;
+		dice1 = ((Roll)Controller.dice()).getNumber();
+		dice2 = ((Roll)Controller.dice()).getNumber();
 
 		switch (dice1)
 

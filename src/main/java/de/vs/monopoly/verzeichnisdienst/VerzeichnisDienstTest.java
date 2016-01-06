@@ -30,14 +30,7 @@ public class VerzeichnisDienstTest {
 
 	public static void main(String[] args) throws IOException {
 		VerzeichnisdienstImpl v = VerzeichnisdienstImpl.init();
-		//SSLCertificateValidation.disable();
-		
-//		Authenticator.setDefault(new MyAuthenticator("abo476","DE1006bw"));
-//		 InputStream in = new URL("https://vs-docker.informatik.haw-hamburg.de/ports/8053/services/1" ).openStream();
-//
-//		 try {
-//		   System.out.println( IOUtils.toString( in ) );
-//		 }
+
 		 
 		 URL yahoo = new URL("https://vs-docker.informatik.haw-hamburg.de/ports/8053/services/1");
 

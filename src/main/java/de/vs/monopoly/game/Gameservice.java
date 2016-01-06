@@ -9,10 +9,15 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
+import controller.GameData;
+import de.vs.monopoly.client.ClientInterface;
+import de.vs.monopoly.client.RetrofitRest;
 import de.vs.monopoly.model.Components;
 import de.vs.monopoly.model.Game;
 import de.vs.monopoly.model.Place;
 import de.vs.monopoly.model.Player;
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
 
 public class Gameservice {
 
@@ -47,16 +52,16 @@ public class Gameservice {
 			String gameId = request.params(":gameid");
 			
 			for(Game game : gameListe){
-				if(game.getGameid()==gameId){
+				if(game.getGameid().equals(gameId)){
 					game.AddPlayer(player);
 					response.status(200);
-					return null;
+					return true;
 				}
 			}
 			
 		//	spieler an den Boardservice übergeben
 			response.status(400);
-			return null;
+			return false;
 		});
 
 // spieler melden sich ready
@@ -65,13 +70,37 @@ public class Gameservice {
 			String playerid = request.params(":playerid");
 			
 			for(Game game : gameListe){
-				if(game.getGameid()==gameId){
+				if(game.getGameid().equals(gameId)){
 					ArrayList<Player> players = game.getPlayers();
 					for(Player player : players){
-						if(player.getId()==playerid){
+						if(player.getId().equals(playerid)){
 							response.status(200);
 							player.setReady(true);
-							return null;
+							
+							if(players.size()>1){
+								int allready = 0;
+								for(Player elem : players){
+									if(!elem.isReady())
+										allready+=1;
+										
+								}
+								if(allready==0){
+									Thread.sleep(5000);
+									while(allready==0){
+										
+										 										
+									 Retrofit retroClient = new Retrofit.Builder().baseUrl("http://localhost:4567")
+													.addConverterFactory(GsonConverterFactory.create()).build();
+											RetroGameserviceInterface sender = retroClient.create(RetroGameserviceInterface.class);
+
+										sender.turn();										
+									}
+
+								}
+				
+							}
+							
+							return true;
 						}
 					}
 				}
@@ -93,7 +122,7 @@ public class Gameservice {
 		get("/games/:gameid/players", (request, response) ->{
 			String gameId 	= request.params(":gameid");
 			for(Game game : gameListe){
-				if(game.getGameid()==gameId){
+				if(game.getGameid().equals(gameId)){
 					response.status(200);
 					return game.getPlayers();
 				}

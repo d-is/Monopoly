@@ -21,12 +21,11 @@ public class RetrofitRest {
 			Controller.zeigeAnDasSpieleramZugist();
 			return true;
 		}); 
-		
-		
+
 		
 		post("/player/event",(request, response) ->{			//event in der gui anzeigen
 			Event event = gson.fromJson(request.body(), Event.class);
-			Controller.zeigeEventan();
+			Controller.zeigeEventan(event.getName());
 			return true;
 			
 			

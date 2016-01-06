@@ -11,19 +11,19 @@ import retrofit.http.Path;
 
 
 public interface ClientInterface {
-	@GET("dice")
+	@GET("/dice")
 	Call<Roll> dice();
 	
-	@POST("games")
+	@POST("/games")
 	Call<Game> erstelleSpiel();
 	
-	@PUT ("games/{gameid}/players/{playerid}")
+	@PUT ("/games/{gameid}/players/{playerid}")
 	Call<Void> registriereSpieler(@Path("gameid") String gamid,@Path("playerid") String playerid);
 	
 	
-	@PUT ("games/{gameid}/players/{playerid}/ready")
+	@PUT ("/games/{gameid}/players/{playerid}/ready")
 	Call<Void> meldeSpielerReady(@Path("gameid") String gamid,@Path("playerid") String playerid);
 	
-	@POST("boards/{gameid}/players/{playerid}/roll")
+	@POST("/boards/{gameid}/players/{playerid}/roll")
 	Call<Void> uebergebeWurf(@Path ("gameid") String gamid,@Path("playerid") String playerid,@Body Roll roll);	
 }

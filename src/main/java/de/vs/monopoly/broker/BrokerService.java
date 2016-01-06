@@ -28,30 +28,11 @@ import retrofit.http.Path;
 
 public class BrokerService {
 
-	private HashMap<String, Broker> brokers;
+	private static HashMap<String, Broker> brokers;
 
-	// List <Game> gameListe = new ArrayList<Game>();
-	// Gson gson = new Gson();
+	public static void main(String[]Args) {
 
-	/*
-	 * @PUT("brokers/{gameid}") Call<Void> createBrokerForGame(@Path("gameid")
-	 * String gameid, @Body Object game);
-	 * 
-	 * @PUT("brokers/{gameid}/places/{placeid}") Call<Void>
-	 * registerPlaces(@Path("gameid") String gameid, @Path("placerid") String
-	 * placeid,@Body Object place);
-	 * 
-	 * @POST("brokers/{gameid}/places/{placeid}/visit/{playerid}") Call<Void>
-	 * playerLogIn(@Path("gameid") String gameid, @Path("placerid") String
-	 * placeid, @Path("playerid") String playerid);
-	 * 
-	 * @POST("brokers/{gameid}/places/{placeid}/owner") Call<Void>
-	 * buyAPlace(@Path("gameid") String gameid, @Path("placerid") String
-	 * placeid, @Path("playerid") String playerid);
-	 */
-	public void start() {
-
-		this.brokers = new HashMap<>();
+		brokers = new HashMap<>();
 
 		Gson gson = new Gson();
 
@@ -61,7 +42,7 @@ public class BrokerService {
 			String placeid = request.params(":placeid");
 			String player = request.params(":playerid");
 			
-			Broker broker = this.brokers.get(gameid);
+			Broker broker = brokers.get(gameid);
 			if(broker != null){
 				
 				//Vorab sicherstellen, dass der Besuch vom alten Platz gelöscht wird
@@ -86,7 +67,7 @@ public class BrokerService {
 			String placeid = request.params(":placeid");
 			Player player = gson.fromJson(request.body(), Player.class);
 			
-			Broker broker = this.brokers.get(gameid);
+			Broker broker = brokers.get(gameid);
 			if(broker != null){
 				
 				//Vorab sicherstellen, dass die "verkaufte" Starße nicht mehr als freie Straße bzw im Besitz eines anderen ist
@@ -122,7 +103,7 @@ public class BrokerService {
 		// boards einen Broker pro Spiel erstellt
 		put("/broker/:gameid", (request, response) -> {
 			Broker newBroker = new Broker(request.params(":gameid"));
-			this.brokers.put(request.params(":gameid"), newBroker);
+			brokers.put(request.params(":gameid"), newBroker);
 			// String json = gson.toJson(this.broker);
 			// response.status(200);
 			return true;
@@ -133,7 +114,7 @@ public class BrokerService {
 			String placeid = request.params(":placeid");
 			String gameid = request.params(":gameid");
 
-			Broker broker = this.brokers.get(gameid);
+			Broker broker = brokers.get(gameid);
 
 			if (broker != null){
 				broker.getFreePlaces().add(placeid);

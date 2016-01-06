@@ -2,6 +2,7 @@ package de.vs.monopoly.board;
 
 import com.google.gson.Gson;
 import de.vs.monopoly.model.Board;
+import de.vs.monopoly.model.Broker;
 import de.vs.monopoly.model.Game;
 import de.vs.monopoly.model.Player;
 import de.vs.monopoly.model.Roll;
@@ -15,72 +16,89 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
+import java.util.HashMap;
+
 public class BoardsService {
 
 	final String url = "https://vs-docker.informatik.haw-hamburg.de/ports/11042/boards";
 	Retrofit retro = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
 	IRetroBoardService boardinterface = retro.create(IRetroBoardService.class);
-	private Board board;
+	// private static Board board;
+	private static HashMap<String, Board> boards;
 
-	public void start() {
-				
-		Game game = new Game(null, null, null);
-		Board board = new Board();
+	public static void main(String[] Args) {
+
+		boards = new HashMap<>();
+
+		Board test = new Board();
+		test.getPositions().put("11", 3);
+		boards.put("10", test);
 		Gson gson = new Gson();
 
 		// Zustand des Brettes abfragen
 		get("/boards/:gameid", (request, response) -> {
-
-			String json = gson.toJson(board.getFields());
+			System.out.println("Zustand des Brettes abgefragt!");
+			String gameid = request.params(":gameid");
+			String json;
+			try {
+				json = gson.toJson(boards.get(gameid).getFields());
+			} catch (Exception e) {
+				json = "Game (ID:" + gameid+ ") ist nicht registiert";
+			}
 			response.status(200);
 			return json;
 		});
 		// Position des Spielers abfragen
 		get("/boards/:gameid/players/:playerid", (request, response) -> {
-			String json = null;
-			//eventuell an gameservice weiterleiten
-			for (Player elem : game.getPlayers()) {
-				if (elem.getId().equals(request.params(":playerid"))) {
-					json = gson.toJson(elem.getPosition());
-					break;
-				}
-			}
+			System.out.println("Zustand eines Spielers abgefragt!");
+			String gameid = request.params(":gameid");
+			String player = request.params(":playerid");
+			// eventuell an gameservice weiterleiten
+			String json;
 			response.status(200);
+			try {
+				json = gson.toJson(boards.get(gameid).getPositions().get(player));
+			} catch (Exception e) {
+				json = "Spieler (ID:" + player + ") ist nicht registiert";
+			}
+
 			return json;
 
 		});
 
-		//client übergibt würfelwurf
+		// client übergibt würfelwurf
 		post("/boards/:gameid/players:playerid/roll", (request, response) -> {
+			System.out.println("Roll wird übergeben");
 			Roll roll = gson.fromJson(request.body(), Roll.class);
 			roll.getNumber();
-			for (Player elem : game.getPlayers()) {
-				if (elem.getId().equals(request.params(":playerid"))) {
-					elem.setPosition(roll.getNumber());
-					break;
-				}
-			}
+
 			return true;
 		});
-		
-		//Games bei Erstellung eines neuen Spiels ein neues Spielbrett erzeugen durch
+
+		// Games bei Erstellung eines neuen Spiels ein neues Spielbrett erzeugen
+		// durch
 		put("/boards/{gameid}", (request, response) -> {
-			
-			this.board = new Board();
-			String json = gson.toJson(this.board);
+			System.out.println("Neues Brett wird erstellt!");
+			String gameid = request.params(":gameid");
+			boards.put(gameid, new Board());
+
 			response.status(200);
-			return json;
+			return true;
 
 		});
-		//Games bei Registierung von Spielern diese gleich auf das Board setzt durch
+		// Games bei Registierung von Spielern diese gleich auf das Board setzt
+		// durch
 		put("/boards/{gameid}/players/{playerid}", (request, response) -> {
-			Player player = gson.fromJson(request.body(), Player.class);
-			this.board.getPositions().put(player.getId(), 0);
-			
+			System.out.println("Spieler wurde registiert!");
+			String gameid = request.params(":gameid");
+			String player = request.params(":playerid");
+
+			boards.get(gameid).getPositions().put(player, 0);
 			response.status(200);
 			return true;
+
 		});
-	
+
 	}
 
 }
