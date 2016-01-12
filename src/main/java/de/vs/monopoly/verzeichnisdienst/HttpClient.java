@@ -14,13 +14,12 @@ public class HttpClient {
 
 		try {
 
-			URL url = new URL("http://vs-docker.informatik.haw-hamburg.de/ports/8053/services");
+			URL url = new URL("https://vs-docker.informatik.haw-hamburg.de/ports/8053/services");
 
-			Base64 b = new Base64();
-
+		//	Util.getUnsafeOkHttpClient();
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("GET");
-		//connection.setDoOutput(true);
+			connection.setDoOutput(true);
 			connection.setRequestProperty("Authorization", "Basic YWJvNDc2OkRFMTAwNnN1ODc=");
 
 			InputStream content = (InputStream) connection.getInputStream();
