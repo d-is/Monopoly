@@ -32,14 +32,10 @@ public class VerzeichnisDienstTest {
 		VerzeichnisdienstImpl v = VerzeichnisdienstImpl.init();
 
 		 
-		 URL yahoo = new URL("https://vs-docker.informatik.haw-hamburg.de/ports/8053/services/1");
-
-		   String passwdstring = "abo476:PASS";
-		   String encoding = new 
-		          sun.misc.BASE64Encoder().encode(passwdstring.getBytes());
+		 URL yahoo = new URL("http://vs-docker.informatik.haw-hamburg.de/ports/8053/services/1");
 
 		   URLConnection uc = yahoo.openConnection();
-		   uc.setRequestProperty("Authorization", "Basic " + encoding);
+		   uc.setRequestProperty("Authorization", "Basic YWJvNDc2OkRFMTAwNnN1ODc=");
 
 		   InputStream content = (InputStream)uc.getInputStream();
 		   BufferedReader in   =   

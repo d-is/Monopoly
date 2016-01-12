@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="de/vs/monopoly/verzeichnisdienst/InstallCert.java" kind="src" output="target/classes" path="src/main/java">
+	<classpathentry kind="src" output="target/classes" path="src/main/java">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
@@ -23,5 +23,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Danton/Desktop/commons-codec-1.10.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
