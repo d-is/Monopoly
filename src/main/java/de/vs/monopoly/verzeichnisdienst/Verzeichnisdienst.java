@@ -6,48 +6,25 @@ import java.net.Proxy;
 import java.util.ArrayList;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.squareup.okhttp.Authenticator;
-import com.squareup.okhttp.ConnectionSpec;
 import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
-import controller.GameData;
-import de.vs.monopoly.model.Game;
-import de.vs.monopoly.model.Player;
 import de.vs.monopoly.model.Service;
-import retrofit.Call;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
-import retrofit.http.Body;
-import retrofit.http.DELETE;
-import retrofit.http.GET;
-import retrofit.http.POST;
-import retrofit.http.PUT;
-import retrofit.http.Path;
 
-public class VerzeichnisdienstImpl {
+public class Verzeichnisdienst {
 
-	private static VerzeichnisdienstImpl verzeichnisdienstImpl;
+	private static Verzeichnisdienst verzeichnisdienstImpl;
 	final String URL = "https://vs-docker.informatik.haw-hamburg.de/ports/8053";
 	Retrofit retro;
 	VerzeichnisdienstInterface verzeichnisdienst;
 
-	public static VerzeichnisdienstImpl init() {
+	public static Verzeichnisdienst init() {
 		if (verzeichnisdienstImpl == null)
-			verzeichnisdienstImpl = new VerzeichnisdienstImpl();
+			verzeichnisdienstImpl = new Verzeichnisdienst();
 		return verzeichnisdienstImpl;
-
 	}
-
-	private VerzeichnisdienstImpl() {
-		OkHttpClient httpClient = Util.getUnsafeOkHttpClient();
-
-		retro = new Retrofit.Builder().baseUrl(URL).addConverterFactory(GsonConverterFactory.create())
-				.client(httpClient).build();
-	
-		verzeichnisdienst = retro.create(VerzeichnisdienstInterface.class);
+	private Verzeichnisdienst() {
+		this.verzeichnisdienst = ServiceGenerator.createService(VerzeichnisdienstInterface.class);
 	}
 
 	public VerzeichnisdienstInterface getVerzeichnisdienstInterface() {
@@ -58,8 +35,6 @@ public class VerzeichnisdienstImpl {
 		Gson result = new Gson();
 		String json = "";
 		try {
-			verzeichnisdienst.registriereService("blub").execute();
-			
 			json = result.toJson(verzeichnisdienst.holeService().execute().body());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -129,5 +104,3 @@ public class VerzeichnisdienstImpl {
 	}
 
 }
-
-

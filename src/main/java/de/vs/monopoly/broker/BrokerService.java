@@ -19,7 +19,7 @@ import de.vs.monopoly.model.Game;
 import de.vs.monopoly.model.Place;
 import de.vs.monopoly.model.Player;
 import de.vs.monopoly.model.Roll;
-import de.vs.monopoly.verzeichnisdienst.VerzeichnisdienstImpl;
+import de.vs.monopoly.verzeichnisdienst.Verzeichnisdienst;
 import retrofit.Call;
 import retrofit.http.Body;
 import retrofit.http.POST;
@@ -79,7 +79,7 @@ public class BrokerService {
 						elem.remove(placeid);
 				}
 				//Der neue Eintrag wird festgelegt
-				String url = VerzeichnisdienstImpl.init().getServiceByName("Bank").get(0).url;
+				String url = Verzeichnisdienst.init().getServiceByName("Bank").get(0).url;
 				//Hier muss der Aufruf bei der Bank gemacht werden Player x kauft entsprechendes Feld
 				//per IF die erfolgreiche abbuchung abwarten und dann das Feld umbuchen
 				

@@ -34,7 +34,7 @@ public class VerzeichnisDienstTest {
 	public static void main(String[] args) throws IOException {
 		
     
-		VerzeichnisdienstImpl v = VerzeichnisdienstImpl.init();
+		Verzeichnisdienst v = Verzeichnisdienst.init();
 
 		 
 //		URL yahoo = new URL("http://vs-docker.informatik.haw-hamburg.de/ports/8053/services/1");
@@ -56,11 +56,11 @@ public class VerzeichnisDienstTest {
 	
 	
 		
-		VerzeichnisdienstInterface loginService =  
+		VerzeichnisdienstInterface verzeichnisdienst =  
 				   ServiceGenerator.createService(VerzeichnisdienstInterface.class);
 		
 			Gson gson = new Gson();
-				String json = gson.toJson(loginService.holeService().execute().body());
+				String json = gson.toJson(verzeichnisdienst.holeService().execute().body());
 				  System.out.println(json);
 
 		
