@@ -1,5 +1,7 @@
 package de.vs.monopoly.client;
 
+import java.util.ArrayList;
+
 import de.vs.monopoly.model.Game;
 import de.vs.monopoly.model.Roll;
 import retrofit.Call;
@@ -12,6 +14,9 @@ import retrofit.http.Path;
 
 public interface ClientInterface {
 
+	@GET("/games")
+	Call<Object> alleSpiele();
+	
 	@POST("/games")
 	Call<Game> erstelleSpiel();
 	

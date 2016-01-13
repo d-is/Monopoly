@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -59,6 +60,7 @@ public class NewGame extends JDialog {
 			contentPanel.add(lblAnmeldung);
 		}
 		{
+			
 			JLabel lblAnmeldeserver = new JLabel("Anmeldeserver:");
 			lblAnmeldeserver.setBounds(10, 51, 90, 14);
 			contentPanel.add(lblAnmeldeserver);
@@ -68,11 +70,30 @@ public class NewGame extends JDialog {
 			lblSpielername.setBounds(10, 76, 77, 14);
 			contentPanel.add(lblSpielername);
 		}
-
-		textFieldServerData = new JTextField();
-		textFieldServerData.setBounds(105, 48, 320, 20);
-		contentPanel.add(textFieldServerData);
-		textFieldServerData.setColumns(10);
+		String[] petStrings = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
+		try{
+			//Holt sich die existierenden Instanzen
+			petStrings = Controller.getAllGames();
+		}catch(Exception e){
+			System.out.println("Fehler beim laden der existierenden GameInstanzen!");
+		}
+		
+		JComboBox petList = new JComboBox(petStrings);
+		petList.setBounds(105, 48, 320, 20);
+		//petList.setSelectedIndex(0);
+		petList.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+		
+			
+		}
+		});
+		
+		
+		
+		//textFieldServerData = new JTextField();
+		//textFieldServerData.setBounds(105, 48, 320, 20);
+		contentPanel.add(petList);
+		//textFieldServerData.setColumns(10);
 
 		textFieldUsername = new JTextField();
 		textFieldUsername.setBounds(105, 73, 320, 20);
@@ -82,9 +103,10 @@ public class NewGame extends JDialog {
 		JRadioButton rdbtnCreateGame = new JRadioButton("Spiel erstellen");
 		rdbtnCreateGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				textFieldServerData.setEnabled(false);
-				textFieldServerData.setText("");
-			}
+				//textFieldServerData.setEnabled(false);
+				//textFieldServerData.setText("");
+				petList.setEnabled(false);
+				}
 		});
 		rdbtnCreateGame.setBounds(105, 100, 320, 23);
 		contentPanel.add(rdbtnCreateGame);
@@ -103,13 +125,13 @@ public class NewGame extends JDialog {
 						if (rdbtnCreateGame.isSelected()) { // Wenn man ein
 															// eigenes Spiel
 															// erstellen möchte
-							boolean suc = Controller.createGame(textFieldServerData.getText(),
+							boolean suc = Controller.createGame("",
 									textFieldUsername.getText());
 
 						} else { // Wenn man sich an einem bestehenden Spiel
 									// anmelden möchte
 
-							boolean suc = Controller.registerPlayer(textFieldServerData.getText(),
+							boolean suc = Controller.registerPlayer(petList.getSelectedItem().toString(),
 									textFieldUsername.getText());
 
 						}

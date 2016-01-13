@@ -6,6 +6,9 @@ import java.util.Random;
 
 import org.eclipse.jetty.util.PathWatcher.Config;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import de.vs.monopoly.model.Roll;
 import de.vs.monopoly.verzeichnisdienst.BlankoRequestsInterface;
 import de.vs.monopoly.verzeichnisdienst.ServiceGenerator;
@@ -67,6 +70,25 @@ public class Controller {
 
 		return true;
 	}
+	public static String[] getAllGames() {
+
+		Response<Object> game = null;
+	
+		try {
+			game = gameService.alleSpiele().execute();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+		}
+		Gson gson = new Gson();
+		String json = gson.toJson(game.body());
+		
+		//String json = gson.toJson(gameListe);
+		
+		return json.split(",");
+	}
 
 	public static boolean registerPlayer(String gameid, String playername) {
 		try {
@@ -119,4 +141,5 @@ public class Controller {
 	public static void zeigeEventan(String text){
 		MainWindow.lblDiceResult.setText(text);
 	}
+
 }

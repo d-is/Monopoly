@@ -33,7 +33,7 @@ public class Gameservice {
 		RetroGameserviceInterface gameRetro = retro.create(RetroGameserviceInterface.class);
 		Spark.port(11041);
 		System.out.println("Game Service gestartet: Port 11041");
-		List<Game> gameListe = new ArrayList<Game>();
+		ArrayList<Game> gameListe = new ArrayList<Game>();
 		Gson gson = new Gson();
 
 		// erstellt neues spiel
