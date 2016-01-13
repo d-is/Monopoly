@@ -7,12 +7,16 @@ import java.util.Random;
 import org.eclipse.jetty.util.PathWatcher.Config;
 
 import de.vs.monopoly.model.Roll;
+import de.vs.monopoly.verzeichnisdienst.BlankoRequestsInterface;
+import de.vs.monopoly.verzeichnisdienst.ServiceGenerator;
+import de.vs.monopoly.verzeichnisdienst.VerzeichnisdienstInterface;
 import de.vs.monopoly.model.Player;
 import de.vs.monopoly.client.ClientInterface;
 import de.vs.monopoly.client.ClientInterface2;
 import de.vs.monopoly.model.Game;
 import retrofit.Call;
 import retrofit.GsonConverterFactory;
+import retrofit.Response;
 import retrofit.Retrofit;
 import retrofit.http.Body;
 import retrofit.http.GET;
@@ -47,14 +51,14 @@ public class Controller {
 	public static boolean createGame(String gamename, String playername) {
 		Random rand = new Random();
 		String id = rand.nextInt() + "";
-		Game game = null;
+		Response<Game> game = null;
 		Player player = new Player(id, playername, null, null, 0);
 		try {
-			game = gameService.erstelleSpiel().execute().body();
+			game = gameService.erstelleSpiel().execute();
+			String urlToRegister = game.headers().get("Lokationsheader");
+			gd.setGameDate(game.body(), player);
 
-			gd.setGameDate(game, player);
-
-			registerPlayer(player);
+			registerPlayer(player, urlToRegister);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -84,10 +88,16 @@ public class Controller {
 		return true;
 
 	}
-
-	private static void registerPlayer(Player player) {
+		//Blanko Register wird ausgeführt, wenn ein neues SPiel erstellt wurde und dieser SPieler sich direkt im Anschluss an das Game anmeldet
+	private static void registerPlayer(Player player, String urlToRegister) {
+		System.out.println("Versuche Spieler mit neuer URL: " +urlToRegister +"\n zu registieren!");
+		Retrofit retro;
+		BlankoRequestsInterface blanko;
+		blanko = ServiceGenerator.createService(BlankoRequestsInterface.class, urlToRegister);
 		try {
-			gameService.registriereSpieler(gd.getGame().getGameid().toString(), player.getId().toString()).execute();
+			
+			
+			blanko.registriereSpieler(player.getId().toString()).execute();
 			gd.getGame().getPlayers().add(player);
 		} catch (Exception e) {
 			e.printStackTrace();

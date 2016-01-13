@@ -37,4 +37,13 @@ public class ServiceGenerator {
 		Retrofit retrofit = builder.client(httpClient).build();
 		return retrofit.create(serviceClass);
 	}
+
+	public static <S> S createService(Class<S> serviceClass, String urlToRegister) {
+		
+		 OkHttpClient httpClient = Util.getUnsafeOkHttpClient();
+		Retrofit.Builder builder = new Retrofit.Builder().baseUrl("http://"+urlToRegister)
+				.addConverterFactory(GsonConverterFactory.create());
+		Retrofit retrofit = builder.client(httpClient).build();
+		return retrofit.create(serviceClass);
+	}
 }

@@ -4,6 +4,7 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,19 +13,22 @@ import com.google.gson.Gson;
 import controller.GameData;
 import de.vs.monopoly.client.ClientInterface;
 import de.vs.monopoly.client.RetrofitRest;
+import de.vs.monopoly.config.Config;
 import de.vs.monopoly.model.Components;
 import de.vs.monopoly.model.Game;
 import de.vs.monopoly.model.Place;
 import de.vs.monopoly.model.Player;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
+import spark.Spark;
 
 public class Gameservice {
 
 	static int gameid = 0;
 
 	public static void main(String[] args) {
-		System.out.println("Game Service gestartet:");
+		Spark.port(11041);
+		System.out.println("Game Service gestartet: Port 11041");
 		List<Game> gameListe = new ArrayList<Game>();
 		Gson gson = new Gson();
 
@@ -38,7 +42,15 @@ public class Gameservice {
 			// spiel an den boardservice schicken
 			String rueck = gson.toJson(game);
 			System.out.println("GameServce: Neues Spiel wurde erstellt ID= "+ game.getGameid());
+			
+			//Nun wird der Lokationheader mit der vollen Adresse zur Registrierung im Header hinzugefügt
+			String []adresse = InetAddress.getLocalHost().toString().split("/");
 			response.status(201);
+			if(adresse.length>0){
+			response.header("Lokationsheader", adresse[1]+Config.games+"games/"+game.getGameid()+"/players/");
+			}else{
+			response.header("Lokationsheader", "ERROR");	
+			}
 			return rueck;
 
 		});
@@ -77,7 +89,7 @@ public class Gameservice {
 							response.status(200);
 							player.setReady(true);
 							System.out.println("GameServce: Spieler ID= "+ player.getId()+" ist ready!");
-							if (players.size() > 1) {
+							if (players.size() > 2) {
 								int allready = 0;
 								for (Player elem : players) {
 									if (!elem.isReady())
