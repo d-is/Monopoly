@@ -1,14 +1,10 @@
 package de.vs.monopoly.verzeichnisdienst;
 
-import java.io.IOException;
-import java.net.PasswordAuthentication;
-import java.net.Proxy;
 import java.util.ArrayList;
-
 import com.google.gson.Gson;
-import com.squareup.okhttp.OkHttpClient;
+
 import de.vs.monopoly.model.Service;
-import retrofit.GsonConverterFactory;
+
 import retrofit.Retrofit;
 
 public class Verzeichnisdienst {
@@ -41,7 +37,6 @@ public class Verzeichnisdienst {
 		}
 
 		return json;
-
 	}
 
 	public String holeServiceById(String name) {

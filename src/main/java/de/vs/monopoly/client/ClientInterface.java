@@ -18,7 +18,6 @@ public interface ClientInterface {
 	@PUT ("/games/{gameid}/players/{playerid}")
 	Call<Void> registriereSpieler(@Path("gameid") String gamid,@Path("playerid") String playerid);
 	
-	
 	@PUT ("/games/{gameid}/players/{playerid}/ready")
 	Call<Void> meldeSpielerReady(@Path("gameid") String gamid,@Path("playerid") String playerid);
 	
