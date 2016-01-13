@@ -1,6 +1,16 @@
 package de.vs.monopoly.verzeichnisdienst;
 
+import java.io.IOException;
+import java.net.PasswordAuthentication;
+import java.net.Proxy;
 import java.util.ArrayList;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.squareup.okhttp.Authenticator;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 import controller.GameData;
 import de.vs.monopoly.model.Game;
@@ -19,7 +29,7 @@ import retrofit.http.Path;
 public class VerzeichnisdienstImpl {
 
 	private static VerzeichnisdienstImpl verzeichnisdienstImpl;
-	final String url = "https://vs-docker.informatik.haw-hamburg.de/ports/8053/services";
+	final String URL = "https://vs-docker.informatik.haw-hamburg.de/ports/8053";
 	Retrofit retro;
 	VerzeichnisdienstInterface verzeichnisdienst;
 
@@ -31,27 +41,45 @@ public class VerzeichnisdienstImpl {
 	}
 
 	private VerzeichnisdienstImpl() {
+		OkHttpClient httpClient = Util.getUnsafeOkHttpClient();
 
-		retro = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
+		retro = new Retrofit.Builder().baseUrl(URL).addConverterFactory(GsonConverterFactory.create())
+				.client(httpClient).build();
 		verzeichnisdienst = retro.create(VerzeichnisdienstInterface.class);
-
 	}
 
 	public VerzeichnisdienstInterface getVerzeichnisdienstInterface() {
 		return this.verzeichnisdienst;
 	}
 
-	public Service holeServiceById(String name) {
-		Service result = null;
+	public String getServices() {
+		Gson result = new Gson();
+		String json = "";
 		try {
-			result = (Service) verzeichnisdienst.holeServiceByName(name);
+			verzeichnisdienst.registriereService("blub").execute();
+			
+			json = result.toJson(verzeichnisdienst.holeService().execute().body());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return json;
+
+	}
+
+	public String holeServiceById(String name) {
+		Gson result = new Gson();
+		String json = "";
+		try {
+			json = result.toJson(verzeichnisdienst.holeServiceByName(name).execute().body());
+			// result = GsonBuilder verzeichnisdienst.holeServiceByName(name);
 			// muss wahscheinlich noch per JSON geparst werden!!! Also das er
 			// eine Liste mit vielen Services
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return result;
+		return json;
 	}
 
 	public ArrayList<Service> getServiceByName(String name) {
@@ -99,3 +127,5 @@ public class VerzeichnisdienstImpl {
 	}
 
 }
+
+

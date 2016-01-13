@@ -29,26 +29,27 @@ public class VerzeichnisDienstTest {
 	
 
 	public static void main(String[] args) throws IOException {
+		
+    
 		VerzeichnisdienstImpl v = VerzeichnisdienstImpl.init();
 
 		 
-		 URL yahoo = new URL("http://vs-docker.informatik.haw-hamburg.de/ports/8053/services/1");
-
-		   URLConnection uc = yahoo.openConnection();
-		   uc.setRequestProperty("Authorization", "Basic YWJvNDc2OkRFMTAwNnN1ODc=");
-
-		   InputStream content = (InputStream)uc.getInputStream();
-		   BufferedReader in   =   
-		            new BufferedReader (new InputStreamReader (content));
-
-		   String line;
-		   while ((line = in.readLine()) != null) {
-		      System.out.println (line);
-		   }   
-
-		   in.close();
+//		URL yahoo = new URL("http://vs-docker.informatik.haw-hamburg.de/ports/8053/services/1");
+//
+//		URLConnection uc = yahoo.openConnection();
+//		uc.setRequestProperty("Authorization", "Basic YWJvNDc2OkRFMTAwNnN1ODc=");
+//
+//		InputStream content = (InputStream) uc.getInputStream();
+//		BufferedReader in = new BufferedReader(new InputStreamReader(content));
+//
+//		String line;
+//		while ((line = in.readLine()) != null) {
+//			System.out.println(line);
+//		}
+//
+//		in.close();
 		
-		//System.out.println(v.getVerzeichnisdienstInterface().holeServiceById("1").execute() );
+		System.out.println(v.getServices());
 	
 	
 	}

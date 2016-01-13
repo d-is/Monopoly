@@ -12,30 +12,25 @@ import retrofit.http.Path;
 
 public interface VerzeichnisdienstInterface {
 
-@GET("services")
+@GET("/services")
 Call<ArrayList<Object>> holeService();
 
-@POST("services")
+@POST("/services")
 Call<Void> registriereService(@Body Object service);
 
-
-
-@GET("services/{id}")
+@GET("/services/{id}")
 Call<Object> holeServiceById(@Path("id") String id);
 
-@PUT("services/{id}")
+@PUT("/services/{id}")
 Call<Void> registriereServiceById(@Path("id") String id, @Body Object service);
 
-
-@DELETE("services/{id}")
+@DELETE("/services/{id}")
 Call<Void> loescheServiceById(@Path("id") String id);
 
-
-
-@GET("services/of/name/{name}")
+@GET("/services/of/name/{name}")
 Call<Object> holeServiceByName(@Path("name") String name);
 
-@GET("services/of/type/{type}")
+@GET("/services/of/type/{type}")
 Call<ArrayList<Object>> holeServiceByType(@Path("type") String type);
 
 

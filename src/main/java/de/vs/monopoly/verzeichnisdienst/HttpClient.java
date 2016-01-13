@@ -16,13 +16,15 @@ public class HttpClient {
 
 			URL url = new URL("https://vs-docker.informatik.haw-hamburg.de/ports/8053/services");
 
-		//	Util.getUnsafeOkHttpClient();
+			//Util.getUnsafeOkHttpClient();
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("GET");
-			connection.setDoOutput(true);
+			//connection.setDoOutput(true);
 			connection.setRequestProperty("Authorization", "Basic YWJvNDc2OkRFMTAwNnN1ODc=");
 
 			InputStream content = (InputStream) connection.getInputStream();
+			//System.out.println(connection.getHeaderFields());
+			
 			BufferedReader in = new BufferedReader(new InputStreamReader(content));
 			String line;
 			while ((line = in.readLine()) != null) {
