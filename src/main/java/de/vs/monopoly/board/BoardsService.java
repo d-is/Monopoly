@@ -12,6 +12,8 @@ import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.http.Body;
 import retrofit.http.Path;
+import spark.Spark;
+
 import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
@@ -20,14 +22,14 @@ import java.util.HashMap;
 
 public class BoardsService {
 
-	final String url = "https://vs-docker.informatik.haw-hamburg.de/ports/11042/boards";
+	final String url = "https://vs-docker.informatik.haw-hamburg.de/ports/11042/boards/";
 	Retrofit retro = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
 	IRetroBoardService boardinterface = retro.create(IRetroBoardService.class);
 	// private static Board board;
 	private static HashMap<String, Board> boards;
 
 	public static void main(String[] Args) {
-
+		Spark.port(11042);
 		boards = new HashMap<>();
 
 		Board test = new Board();
@@ -67,7 +69,7 @@ public class BoardsService {
 		});
 
 		// client übergibt würfelwurf
-		post("/boards/:gameid/players:playerid/roll", (request, response) -> {
+		post("/boards/:gameid/players/:playerid/roll", (request, response) -> {
 			System.out.println("Roll wird übergeben");
 			Roll roll = gson.fromJson(request.body(), Roll.class);
 			roll.getNumber();
@@ -77,24 +79,28 @@ public class BoardsService {
 
 		// Games bei Erstellung eines neuen Spiels ein neues Spielbrett erzeugen
 		// durch
-		put("/boards/{gameid}", (request, response) -> {
-			System.out.println("Neues Brett wird erstellt!");
+		put("/boards/:gameid", (request, response) -> {
+		
 			String gameid = request.params(":gameid");
-			boards.put(gameid, new Board());
-
+			Board board = new Board();
+			boards.put(gameid, board);
+			String rueck = gson.toJson(board);
+		
 			response.status(200);
-			return true;
+			System.out.println("Neues Brett wird erstellt! Fuer Game Id: "+ gameid);
+			return rueck;
 
 		});
 		// Games bei Registierung von Spielern diese gleich auf das Board setzt
 		// durch
-		put("/boards/{gameid}/players/{playerid}", (request, response) -> {
+		put("/boards/:gameid/players/:playerid", (request, response) -> {
 			System.out.println("Spieler wurde registiert!");
 			String gameid = request.params(":gameid");
 			String player = request.params(":playerid");
 
 			boards.get(gameid).getPositions().put(player, 0);
 			response.status(200);
+			System.out.println("Spieler: "+player+" wurde registiert! Spiel: "+gameid);
 			return true;
 
 		});

@@ -15,7 +15,7 @@ Call<Void> getBoardStatus(@Path("gameid") String gameid, @Body Object game);
 @GET("boards/{gameid}/players/{playerid}")
 Call<Void> getPlayerPosition(@Path("gameid") String gameid, @Path("playerid") String playerid, @Body Object game);	
 
-@POST("/boards/{gameid}/players/{playerid}/roll")
+@POST("boards/{gameid}/players/{playerid}/roll")
 Call<Void> uebergabeWurf(@Path("gameid") String gameid, @Path("playerid") String playerid, @Body Object roll);
 
 @PUT("boards/{gameid}")
