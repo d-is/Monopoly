@@ -10,6 +10,7 @@ import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.KeyStore;
+import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -19,8 +20,10 @@ import javax.net.ssl.TrustManager;
 
 import org.apache.commons.codec.binary.Base64;
 
+import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 
+import retrofit.Call;
 import spark.utils.IOUtils;
 
 
@@ -52,6 +55,16 @@ public class VerzeichnisDienstTest {
 		System.out.println(v.getServices());
 	
 	
+		
+		VerzeichnisdienstInterface loginService =  
+				   ServiceGenerator.createService(VerzeichnisdienstInterface.class);
+		
+			Gson gson = new Gson();
+				String json = gson.toJson(loginService.holeService().execute().body());
+				  System.out.println(json);
+
+		
+		
 	}
 
 

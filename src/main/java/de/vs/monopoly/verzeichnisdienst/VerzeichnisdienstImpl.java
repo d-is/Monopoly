@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.Authenticator;
+import com.squareup.okhttp.ConnectionSpec;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -45,6 +46,7 @@ public class VerzeichnisdienstImpl {
 
 		retro = new Retrofit.Builder().baseUrl(URL).addConverterFactory(GsonConverterFactory.create())
 				.client(httpClient).build();
+	
 		verzeichnisdienst = retro.create(VerzeichnisdienstInterface.class);
 	}
 
